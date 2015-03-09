@@ -30,7 +30,7 @@ ParaMyGame = {
     // set this to true to pause at intro page for debugging. 
     bDebugIntroPage: false,
     // if true, we will automatically show the game window when update complete. If false, we will wait for game message to show.
-    bAutoShowGameWindow: false,
+    bAutoShowGameWindow: true,
     // true to enter the game after updating the game, false to let the user manually enter the game.
     isAutoEnterGame: true,
     // the jquery path for the fallback content, we will auto show/hide during DOM ready according to whether plugin is installed or not.  
@@ -439,7 +439,7 @@ ParaMyGame = {
             ParaWebPlugin.cmd_params = ParaWebPlugin.cmd_params_default;
         }
         // force paracraft
-        ParaWebPlugin.cmd_params = ParaWebPlugin.cmd_params + " mc=true";
+        ParaWebPlugin.cmd_params = ParaWebPlugin.cmd_params + " mc=\"true\"";
 
         var region = that_.getRequestParameter("region");
         if (region != "") {
