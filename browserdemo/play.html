@@ -1,0 +1,477 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="image/ico" rel="shortcut icon" href="res/paracraft.ico" />
+<meta name="keywords" content="Paracraft, 创意空间, 创意空间官网, Paracraft下载, " />
+<meta name="description" content="Paracraft创意空间是一款免费的3D个人电影创作软件" />
+<title>Paracraft创意空间</title>
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/ParaEngineClient.js?date=20130329" type="text/javascript"></script>
+<script type="text/javascript">
+    // 您可以将Web版嵌入到您的个人网站, 只需要用iframe的方式访问"./play.html?raw=on"就可以了；所以请不要修改这个网页, 本网页的持久连接由官方维护更新和升级。 分辨率960*560以上。
+    // request params supported are play.html?autostart=false&uid=1234567&raw=on&region=0&autofit=true
+    ParaMyGame.StartFileRedistInstall = function () {
+        // overwrite the StartFileRedistInstall, with a dummy function
+    };
+    ParaWebPlugin.redistInstallUrl = "RedistParaEngineClient1003.exe";
+    // ParaMyGame.isAutoStart = false;
+    ParaWebPlugin.OnRedistInstalled = function () {
+        $(ParaMyGame.ManualStartShowContentPath).show();
+        $(ParaMyGame.ManualStartHideContentPath).hide();
+    };
+    // disable auto enter game 
+    //ParaMyGame.isAutoEnterGame = false;
+    ParaMyGame.OnPreloaderReady = function () {
+        ParaMyGame.SetProgress(1, "更新完毕!");
+        ParaMyGame.SetLoadingText("已更新到最新版本")
+        $("#entergame").show();
+        $("#main .c").css('border-color', "#ffffff");
+        $("#big_bg").hide();
+    }
+    // we will show the news iframe when game loader is first shown.
+    ParaMyGame.OnShowGameLoader = function () {
+
+    };
+
+    $(document).ready(function () {
+        if (ParaMyGame.getRequestParameter("autostart") == "false") {
+            ParaMyGame.isAutoStart = false;
+        }
+        // DEBUG UI: set this to true to debug loader UI
+        var test_loader_ui = false;
+        if (!test_loader_ui) {
+            ParaMyGame.OnDOMReady();
+        }
+
+        $('.no_javascript').hide();
+
+        // auto fit the parent window
+        if (ParaMyGame.getRequestParameter("autofit") == "true" || self == top) {
+            function adjustWindowSize() {
+                var width = $(this).width();
+                var height = $(this).height();
+                width = parseInt(width);
+                height = parseInt(height);
+                width = width - 50;
+                height = height - 40;
+                ParaMyGame.SetInitialWindowSize(width, height);
+                ParaMyGame.updateSize(width, height);
+            }
+            $(window).resize(function () {
+                adjustWindowSize();
+            });
+            adjustWindowSize();
+        }
+
+        var visit_url = ParaMyGame.getRequestParameter("visit_url");
+        if ((visit_url != null && visit_url != "") || ParaMyGame.getRequestParameter("raw") == "on") {
+            $('.deco').hide();
+            $("#big_bg").show();
+        }
+        else {
+            $('.deco').show();
+        }
+
+        // the following code is for testing ui
+        if (test_loader_ui) {
+            if (ParaMyGame.getRequestParameter("raw") == "on") {
+                $('.deco').hide();
+            }
+            // NOTE: one can show or hide a given ui to debug its appearance.
+            $("#gameloader").hide();
+            $('.nonmsie').hide();
+            $('.msie').show();
+            //$("#installguide").hide();
+            //ParaMyGame.OnShowGameLoader();
+            //ParaMyGame.OnPreloaderReady();
+            $(ParaMyGame.ManualStartHideContentPath).hide();
+            $(ParaMyGame.ManualStartShowContentPath).show();
+            $(".pe-player-fallback").show();
+            $(".install_notice").show();
+            $(".pe-start-show-redist").hide();
+            $(".pe-start-hide-redist").show();
+        }
+        $('.installicon').mouseenter(function () {
+            var div = $(this);
+            div.animate({ top: '-5px' }, "fast");
+            div.animate({ top: '0px' }, "fast");
+        });
+        $('#btnWebInstall').click(function () {
+            $('.install_main').hide();
+            $('.install_client').hide();
+            $('.install_web').show();
+        });
+        $('#btnClientInstall').click(function () {
+            $('.install_main').hide();
+            $('.install_web').hide();
+            $('.install_client').show();
+        });
+        $('.btnBackToMain').click(function () {
+            $('.install_web').hide();
+            $('.install_client').hide();
+            $('.install_main').show();
+        });
+
+        // Detect if ClickOnce is supported by the browser.
+        // Roughly based on http://stackoverflow.com/a/4653175/117402
+        var hasMimeSupport = function (desiredMime) {
+            var mimes = window.navigator.mimeTypes,
+            hasSupport = false;
+
+            for (var i = 0; i < mimes.length; i++) {
+                var mime = mimes[i];
+
+                if (mime.type == desiredMime) {
+                    hasSupport = true;
+                }
+            }
+
+            return hasSupport;
+        };
+
+        var sniffForClickOnce = function () {
+            var userAgent = window.navigator.userAgent.toUpperCase(),
+            hasNativeDotNet = userAgent.indexOf('.NET CLR 3.5') >= 0;
+            return hasNativeDotNet || hasMimeSupport("application/x-ms-application");
+        };
+
+        ParaMyGame.hasClickOnce = sniffForClickOnce();
+        if (!ParaMyGame.hasClickOnce) {
+            $('.clickonce').hide();
+        }
+
+        // force a given install type
+        var clickonce_type = ParaMyGame.getRequestParameter("clickonce");
+        if (clickonce_type == "web") {
+            $('#btnWebInstall').click();
+        }
+        else if (clickonce_type == "client") {
+            $('#btnClientInstall').click();
+        }
+        else if (visit_url != null && visit_url != "") {
+            $('#btnWebInstall').click();
+        }
+
+        var weburl = ParaMyGame.getRequestParameter("weburl");
+        if (weburl != null && weburl != "") {
+            $("a.weburl").attr('href', "http://haqi.61.com/" + weburl + "?date=20130530&FixForIE=.exe");
+            $("a.weburl").attr('target', "_self");
+        }
+        var clienturl = ParaMyGame.getRequestParameter("clienturl");
+        if (clienturl != null && clienturl != "") {
+            $("a.clienturl").attr('href', "http://haqi.61.com/" + clienturl + "?date=20130530&FixForIE=.exe");
+            $("a.clienturl").attr('target', "_self");
+        }
+    });
+</script>
+<style type="text/css"> 
+html,body		{margin:0 auto;padding:0;background:#F1F1F1;font-size:12px;font-family:tahoma;}
+img			{border:0;}
+h1, h2, h3, h4, h5, h6, p, ul, ol, li, form, input, dl, dt, dd	{margin:0;padding:0;}
+
+.left			{float:left;}
+.right			{float:right;}
+.clear			{clear:both;}
+.tac			{text-align:center;}
+
+.hidden			{display:none;}
+.wrapper		{width:960px;margin:0 auto;}
+.topnav			{height:24px;color:#666666;}
+.topnav a		{color:#666666;text-decoration:none;font-size:14px;}
+.topnav a.sc	{color:#2D2D2D;}
+.topnav span	{float:left;padding-top:3px;text-align:center;font-family:"宋体";}
+.topnav a		{float:left;display:inline;font-size:12px;padding:1px 5px;}
+.topnav a:hover	{background:#909090;color:#FFFFFF;}
+
+.logo			{float:left;}
+.logo a:hover	{background:none;}
+.prd			{float:left;margin-top:4px;display:inline;}
+.ext			{float:right;margin-top:4px;font-size:12px;}
+.ext a			{font-size:12px;}
+.flashcontent	{margin:2px auto;overflow:hidden;width:960px;height:560px;border:2px solid #FFF;}
+.prdbanner		{margin-top:50px;}
+.prdbanner img	{margin:0px 3px;}
+
+.prdlink                    { width:975px; margin:0 auto; margin-top:15px; border-bottom:1px solid #c7ced4; height:32px; overflow:hidden; text-align:center;}
+.prdlink a                  { height:17px; color:#1d8b00; text-decoration:underline; padding:0 20px 0 10px; overflow:hidden;}
+
+.copyright			{margin-top:10px;}
+.copyright a		{color:#666666;text-decoration:none;}
+.copyright .left	{float:left;margin-top:10px;width:180px;height:35px;margin-left:130px;display:inline;}
+.copyright .right	{float:right;width:640px;text-align:left;font-size:12px;line-height:18px;}
+.copyright span		{color:#aaa;}
+
+#main {
+	position:relative;
+    color: #666;
+    text-align: center;
+    padding: 0px;
+    width: 964px;
+    height: 564px;
+    left: 50%;
+    margin-left: -482px;
+    top: 0px;
+    margin-top: 2px;
+}
+#main .c {
+    border: 2px solid #FFF;
+    width: 960px;
+    height: 560px;
+}
+#gameloader
+{
+	position:absolute;
+	display:none;
+	text-align: left;
+    width: 960px;
+    height: 560px;
+}
+#gameloader .loading_content
+{
+	margin-top:208px;
+	margin-left:360px;
+	width:320px;
+	height:70px;
+}
+#gameloader .logos
+{
+	margin-top:220px;
+	margin-left:360px;
+	width:400px;
+	height:35px;
+}
+#progressbar
+{
+	margin-left:2px;
+	background-image:url(res/progressbar.jpg);
+	width:310px; /*2px-310px*/
+	height:35px;
+}
+#loader_progress_text
+{
+	margin-top: -27px;
+	font-size:14px;
+	color:#FFFFFF;
+}
+#loading_text
+{
+	margin-top:36px;
+	font-size:12px;
+	color:#0B5BB4;
+}
+#installguide
+{
+	position:absolute;
+	text-align: left;
+	width: 960px;
+	height: 560px;
+}
+.play_function			{margin:0px auto auto auto;width:470px;height:30px;line-height:27px;}
+.play_function	.button	{float:left;text-align:center;display:block;text-decoration:none;margin-right:15px;width:90px;height:27px;font-size:14px;color:#fff;font-weight:bold;background:url(http://res.61.com/images/haqi/main/haqi_index.gif) no-repeat -494px 0px;}
+.play_function  .notice	{color:#006099;text-decoration:underline;margin-left: 20px;}
+.install_notice			
+{
+    color:#3399FF;
+    margin-top:186px;margin-left:237px;width:526px;height:226px;
+    font-size:14px;
+    background:url(res/pluginpanel.jpg) no-repeat;
+}
+.bold_text			    {color:#fcee0d;font-size:14px;}
+.launcher_bg	{overflow:hidden;width:960px;height:560px;background:url(res/loading_bg.jpg?v=2) no-repeat center top;}
+.deco			{display:none;}
+</style>
+</head>
+<body>
+<!--debugger: remove this in release version -->
+<div class="debugger" style="position:absolute;top:50px;left:0px;">
+<div id="output" style="display:none;color:Green" ></div>
+</div>
+<div style="float:left;width:100%">
+<div id="big_bg" style="display:none;overflow:hidden;position:absolute;margin-top:2px;width:100%;height:560px;background:url(res/loading_bg.jpg?v=2) no-repeat center top;">
+</div>
+</div>
+<!--ParaEngineClient plugin object place holder-->
+<div id="main">
+    <div class="c launcher_bg" id="container">
+        <!--div to display if plugin is not installed or enabled-->
+        <div id="installguide">
+            <!--this block is shown before DOM ready and hidden when DOM is ready and user has installed plugin-->
+            <div class="pe-player-fallback">
+	        <!--IE notice-->
+            <div class="no_javascript install_notice" style="padding-bottom:10px;" align="left">
+                <div align="left" style="float:left" class="pe-start-hide-redist">
+                    <div class="install_client" style="float:left;margin-top:30px;margin-left:20px;width:450px;">
+                        <div>
+                            <div style="font-size:15px;font-weight:bold;color:#CC6600" align="center">安装 Paracraft 电脑版</div>
+                        </div>
+                        <div style="margin-top:10px;width:450px">
+                            <div  align="center">
+                                <a class="button clienturl" href="RedistParaEngineClient1003.exe?date=20130424&FixForIE=.exe" title="一键安装">
+                                    <div style="width:160px;padding:5px;font-size: 20px; font-weight: bold; background-color: #FFCC00; border: 2px solid #3399FF;text-align:center; color: #3399FF;">
+                                        一键安装
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div align="center" style="margin-top:10px;">
+                            <div>其他版本</div>
+                            <a class="button" href="http://bbs.paraengine.com/portal.php?mod=topic&topicid=1&diy=yes" title="下载游戏">
+                                下载Android安卓/iOS苹果手机版
+                            </a>
+                        </div>
+                        <div align="center" style="margin-top:10px;">
+                            请放心运行， 安装后会自动启动
+                        </div>
+                        <div align="right" style="margin-top:10px;">
+                            <a class="button btnBackToMain" href="javascript:;">返回上一页</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+	        <div class="install_notice msie nonmsie" style="display:none;padding-bottom:10px;" align="left">
+                <!--this block is hidden initially, and only shown after DOM is ready and user still does not have plugin installed. -->
+                <div align="left" style="float:left" class="pe-start-hide-redist">
+			        <div class="install_main" style="float:left;margin-top:30px;margin-left:20px;">
+                        <div style="float:left;width:240px;">
+                            <div>
+                                <div style="font-size:15px;font-weight:bold;color:#CC6600" align="center">客户端版</div>
+                            </div>
+                            <div style="margin-top:10px;margin-left:80px;height:80px;">
+                                <div class="installicon" style="float:left;position:relative;">
+                                    <a class="button" id="btnClientInstall" href="javascript:;"  title="">
+                                        <img src="res/clientinstall.jpg" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div style="clear:both;margin-top:0px;" align="center">
+                                创作人员必备<br />
+                                <span style="font-size:14px;font-weight:bold">(强力推荐!)</span>
+                            </div>
+                        </div>
+                        <div style="float:left;width:240px;">
+                            <div>
+                                <div style="font-size:15px;font-weight:bold" align="center">网页版</div>
+                            </div>
+                            <div style="margin-top:10px;margin-left:80px;height:80px;">
+                                <div class="installicon" style="float:left;position:relative;">
+                                    <a class="button" id="btnWebInstall" href="javascript:;"  title="安装ParaEngine 3D播放器(文件大小1MB)">
+                                        <img src="res/webinstall.jpg" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div style="clear:both;margin-top:0px;" align="center">
+                                浏览器直接进入游戏<br />
+                                需先安装ParaEngine 3D播放器
+                            </div>
+                        </div>
+                    </div>
+                    <div class="install_client" style="float:left;display:none;margin-top:30px;margin-left:20px;width:450px;">
+                        <div>
+                            <div style="font-size:15px;font-weight:bold;color:#CC6600" align="center">安装 Paracraft 电脑版</div>
+                        </div>
+                        <div style="margin-top:10px;width:450px">
+                            <div  align="center">
+                                <a class="button" href="http://bbs.paraengine.com/portal.php?mod=topic&topicid=1&diy=yes" title="一键安装">
+                                    <div style="width:160px;padding:5px;font-size: 20px; font-weight: bold; background-color: #FFCC00; border: 2px solid #3399FF;text-align:center; color: #3399FF;">
+                                        点击查看
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div align="center" style="margin-top:10px;">
+                            请放心运行
+                        </div>
+                        <div align="right" style="margin-top:10px;">
+                            <a class="button btnBackToMain" href="javascript:;">返回上一页</a>
+                        </div>
+                    </div>
+                    <div class="install_web" style="float:left;display:none;margin-top:30px;margin-left:20px;width:450px;">
+                        <div>
+                            <div style="font-size:15px;font-weight:bold;color:#CC6600" align="center">安装 Paracraft Web版</div>
+                        </div>
+                        <div class="clickonce" style="margin-top:10px;width:450px">
+                            <div  align="center">
+                                <a class="button weburl" href="http://haqi.61.com/webplayer/HaqiMagicRedistKids1004.application" target="_blank" title="自动安装">
+                                    <div style="width:160px;padding:5px;font-size: 20px; font-weight: bold; background-color: #FFCC00; border: 2px solid #3399FF;text-align:center; color: #3399FF;">
+                                        自动安装
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div align="center" style="margin-top:10px;">
+                            <div>下载安装3D播放器</div>
+                            <a class="button weburl" href="RedistParaEngineClient1003.exe?date=20130424&FixForIE=.exe" title="安装ParaEngine 3D播放器(文件大小1MB)">
+                                点击下载ParaEngine 3D播放器(文件大小1MB)
+                            </a>
+                        </div>
+                        <div align="center" style="margin-top:10px;">
+                            请放心运行， 安装后软件会在当前页面中启动. 
+                        </div>
+                        <div align="right" style="margin-top:10px;">
+                            <a class="button btnBackToMain" href="javascript:;">返回上一页</a>
+                        </div>
+                    </div>
+		        </div>
+                <div align="left" class="pe-start-show-redist" style="display:none;float:left;">
+                    <div style="float:left;margin-top:30px;width:500px">
+                        <div align="center">
+                            <div style="font-size:15px;font-weight:bold">恭喜！您已经安装完成！</div>
+                        </div>
+                        <div class="install_client" style="float:left;display:none;margin-top:30px;width:500px;">
+                            <div align="center">请点击Windows桌面图标启动游戏</div>
+                        </div>
+                        <div class="install_web" style="float:left;display:none;margin-top:30px;width:500px;">
+                            <div align="center">
+                                <div style="font-size:15px;font-weight:bold">请点击下方按钮进入游戏</div>
+                            </div>
+                            <div style="margin-top:10px;width:500px">
+                                <div  align="center">
+                                    <a class="button entergame" href="javascript:;" onclick="window.location.reload(false);" title="进入游戏">
+                                        <div style="width:190px;padding:5px;font-size: 20px; font-weight: bold; background-color: #FFCC00; border: 2px solid #3399FF;text-align:center; color: #3399FF;">
+                                            进入游戏
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+	        </div>
+            </div>
+        </div>
+        <!--game loader to display after plugin is started-->
+        <div id="gameloader">
+            <div class="loading_content">
+                <div id="progressbar">
+                </div>
+                <div style="text-align: center;">
+                    <div id="loader_progress_text">正在更新Paracraft...</div>
+                    <div id="loading_text">Paracraft网页版也可以进入啦!</div>
+                </div>
+            </div>
+            <div class="logos">
+            </div>
+            <div style="margin-top:-240px;margin-left:30px;margin-right:30px;">
+                <div id="ezjax_content"></div>
+	        </div>
+        </div>
+        <object style="position:relative;top:-2000px" id="paraplugin" type="application/x-paraenginewebplugin" width="960" height="560"></object>
+    </div>
+</div>
+
+<div class="play_function screenresizer" style="display:none">
+    <div style="height:15px;"></div>
+    <a class="button res" href="#" title="1280:760">超</a>
+    <a class="button res" href="#" title="1020:680">大</a>
+    <a class="button res" href="#" title="960:560">中</a>
+    <a class="button res" href="#" title="720:480">小</a>
+</div>
+<div id="J_iframeBanner" class="deco iframe_banner tac"></div>
+<br />
+<script type="text/javascript">
+    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2a64ae34e2d0fc0cc59cc67bd392ac20' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</body>
+</html> 

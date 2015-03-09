@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+<link type="image/ico" rel="shortcut icon" href="res/paracraft.ico" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<meta name="keywords" content="Paracraft, 创意空间, 创意空间官网, Paracraft下载, " />
+<meta name="description" content="Paracraft创意空间是一款免费的3D个人电影创作软件" />
+<title>Paracraft创意空间</title>
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function getRequestParameter(name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(window.location.href);
+        if (results == null)
+            return "";
+        else
+            return results[1];
+    };
+
+    $(document).ready(function () {
+        var regexS = "([\\?&].*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(window.location.href);
+        var url = 'play.html';
+        if (results != null) {
+            url += results[1];
+        }
+        $("a.startgame").attr('href', url);
+
+        if (getRequestParameter("raw") == "on") {
+            $('.deco').hide();
+        }
+    });
+</script>
+<style type="text/css"> 
+body		{margin:0 auto;padding:0;background:#F1F1F1;text-align:center;font-size:13px;font-family:tahoma;}
+img			{border:0;}
+h1, h2, h3, h4, h5, h6, p, ul, ol, li, form, input, dl, dt, dd	{margin:0;padding:0;}
+
+.left			{float:left;}
+.right			{float:right;}
+.clear			{clear:both;}
+.tac			{text-align:center;}
+
+.wrapper		{width:960px;margin:0 auto;}
+.topnav			{height:24px;color:#666666;}
+.topnav a		{color:#666666;text-decoration:none;font-size:14px;}
+.topnav a.sc	{color:#2D2D2D;}
+.topnav span	{float:left;padding-top:3px;text-align:center;font-family:"宋体";}
+.topnav a		{float:left;display:inline;font-size:12px;padding:1px 5px;}
+.topnav a:hover	{background:#909090;color:#FFFFFF;}
+
+.logo			{float:left;}
+.logo a:hover	{background:none;}
+.prd			{float:left;margin-top:4px;display:inline;}
+.ext			{float:right;margin-top:4px;font-size:12px;}
+.ext a			{font-size:12px;}
+.flashcontent	{margin:2px auto;overflow:hidden;width:960px;height:560px;border:2px solid #FFF;background:url(res/download_bg.jpg) no-repeat;}
+.prdbanner		{margin-top:50px;}
+.prdbanner img	{margin:0px 3px;}
+
+.prdlink                    { width:975px; margin:0 auto; margin-top:15px; border-bottom:1px solid #c7ced4; height:32px; overflow:hidden; text-align:center;}
+.prdlink a                  { height:17px; color:#1d8b00; text-decoration:underline; padding:0 20px 0 10px; overflow:hidden;}
+
+.copyright			{margin-top:10px;}
+.copyright a		{color:#666666;text-decoration:none;}
+.copyright .left	{float:left;margin-top:10px;width:180px;height:35px;margin-left:130px;display:inline;}
+.copyright .right	{float:right;width:640px;text-align:left;font-size:12px;line-height:18px;}
+.copyright span		{color:#aaa;}
+
+.haqi_operate		{width:960px;margin-top:400px;}
+.left_button		{float:left;width:360px;}
+.enter				{float:left;width:150px;}
+.video { position:relative;text-align:left }
+</style>
+<script type="text/javascript">
+</script>
+</head>
+
+<body>
+<div id="myFlashBox" name="myFlashBox" class="flashcontent" style="color:#e7eefa" align="left">
+    <div style="margin-top:210px;height:230px;margin-left:115px;">
+        <div style="float:left;width:335px;height:225px;" align="left">
+            <div style="margin-left:30px;margin-top:20px">
+            <div>
+                <div style="font-size:15px;font-weight:bold">客户端版（推荐使用）</div>
+                <div style="margin-top:5px;font-size:12px;">创作电影必备</div>
+            </div>
+            <div style="margin-top:10px">
+                <div style="height:44px;">
+                    <div style="float:left;">
+                        <a class="button" href="http://bbs.paraengine.com/portal.php?mod=topic&topicid=1" title="下载软件"><img src="res/downloadgame.gif"/></a>
+                    </div>
+                    <div style="float:left;margin-left:0px;margin-top:15px;font-weight:bold">内涵Android安卓/iOS苹果移动端下载地址</div>
+                </div>
+                <div style="clear:both;margin-top:15px;"></div>
+            </div>
+            </div>
+        </div>
+        <div style="float:left;margin-left:50px;width:335px;height:225px;" align="left">
+            <div style="margin-left:30px;margin-top:20px">
+            <div >
+                <div style="font-size:15px;font-weight:bold">网页版</div>
+                <div style="margin-top:5px;font-size:12px;">无需下载，直接运行，自动安装插件</div>
+            </div>
+            <div style="margin-top:10px;height:44px;">
+                <div style="float:left;">
+                    <a class="button startgame" href="play.html" target="_self" title="开始游戏" style="display:block;"><img src="res/startgame.gif"/></a>
+                </div>
+            </div>
+            <div>
+                <div style="margin-top:15px;color:#ffff00;font-weight:bold">
+                    <a style="color:#ffff00;" href="RedistParaEngineClient1003.exe?date=20130219&FixForIE=.exe" title="Web插件">【下载Web插件】</a> 1MB
+                </div>
+                <div style="margin-top:5px;">若无法自动运行, 请手工下载并安装Web插件</div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-left:130px;margin-top:32px;color:#e7eefa;width:320px;">
+        <div>最低配置: DirectX 7.0 以上显卡, 1GB内存</div>
+        <div style="margin-top:5px;">推荐配置: DirectX 9.0 显卡, 512MB显存, 2GB内存</div>
+    </div>
+    <div style="margin-left:800px;">
+        <a href="http://www.paraengine.com" style="float:left;display:block;width:130px;height:40px;" target="_blank" title="ParaEngine Co."></a>
+    </div>
+</div>
+<br />
+<script type="text/javascript">
+    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2a64ae34e2d0fc0cc59cc67bd392ac20' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</body> 
+</html>
