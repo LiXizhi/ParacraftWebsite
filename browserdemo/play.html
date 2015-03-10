@@ -14,7 +14,7 @@
     ParaMyGame.StartFileRedistInstall = function () {
         // overwrite the StartFileRedistInstall, with a dummy function
     };
-    ParaWebPlugin.redistInstallUrl = "RedistParaEngineClient1003.exe";
+    ParaWebPlugin.redistInstallUrl = "RedistParaEnginePlayer1003.exe";
     // ParaMyGame.isAutoStart = false;
     ParaWebPlugin.OnRedistInstalled = function () {
         $(ParaMyGame.ManualStartShowContentPath).show();
@@ -39,7 +39,7 @@
             ParaMyGame.isAutoStart = false;
         }
         // DEBUG UI: set this to true to debug loader UI
-        var test_loader_ui = false;
+        var test_loader_ui = true;
         if (!test_loader_ui) {
             ParaMyGame.OnDOMReady();
         }
@@ -307,21 +307,17 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, li, form, input, dl, dt, dd	{margin:0;padding
                         </div>
                         <div style="margin-top:10px;width:450px">
                             <div  align="center">
-                                <a class="button clienturl" href="RedistParaEngineClient1003.exe?date=20130424&FixForIE=.exe" title="一键安装">
+                                <a class="button" href="http://bbs.paraengine.com/portal.php?mod=topic&topicid=1&diy=yes" title="查看下载">
                                     <div style="width:160px;padding:5px;font-size: 20px; font-weight: bold; background-color: #FFCC00; border: 2px solid #3399FF;text-align:center; color: #3399FF;">
-                                        一键安装
+                                        查看下载
                                     </div>
                                 </a>
                             </div>
                         </div>
                         <div align="center" style="margin-top:10px;">
-                            <div>其他版本</div>
-                            <a class="button" href="http://bbs.paraengine.com/portal.php?mod=topic&topicid=1&diy=yes" title="下载游戏">
-                                下载Android安卓/iOS苹果手机版
+                            <a class="button" href="http://bbs.paraengine.com/portal.php?mod=topic&topicid=1&diy=yes" title="下载">
+                                包含Android安卓/iOS苹果手机版
                             </a>
-                        </div>
-                        <div align="center" style="margin-top:10px;">
-                            请放心运行， 安装后会自动启动
                         </div>
                         <div align="right" style="margin-top:10px;">
                             <a class="button btnBackToMain" href="javascript:;">返回上一页</a>
@@ -401,7 +397,7 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, li, form, input, dl, dt, dd	{margin:0;padding
                         </div>
                         <div align="center" style="margin-top:10px;">
                             <div>下载安装3D播放器</div>
-                            <a class="button weburl" href="RedistParaEngineClient1003.exe?date=20130424&FixForIE=.exe" title="安装ParaEngine 3D播放器(文件大小1MB)">
+                            <a class="button weburl" href="RedistParaEnginePlayer1003.exe?date=20130424&FixForIE=.exe" title="安装ParaEngine 3D播放器(文件大小1MB)">
                                 点击下载ParaEngine 3D播放器(文件大小1MB)
                             </a>
                         </div>
