@@ -636,6 +636,7 @@ ParaWebPlugin = {
                     pluginElement.attachEvent("on" + name, func);
                 } else {
                     pluginElement.addEventListener(name, func, false);
+					pluginElement["on" + name] = func; // fix IE 11 
                 }
             },
             log: function (msg) {
